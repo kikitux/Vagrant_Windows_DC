@@ -21,22 +21,20 @@ Vagrant.configure("2") do |config|
 
     config.vm.network :private_network, ip: $domain_ip_address
 
-
     config.vm.network "forwarded_port", host: 33389, guest: 3389 #RDP
     config.vm.network "forwarded_port", host: 389, guest: 389 #LDAP
     config.vm.network "forwarded_port", host: 636, guest: 636 #LDAPS
     config.vm.network "forwarded_port", host: 88, guest: 88 # Kerberos
 
-
-        # Configure VirtualBox
-        config.vm.provider :virtualbox do |v|
-            v.gui = true
-            v.name = "WindowsDC"
-            v.cpus = 2
-            v.memory = 2048
-            v.linked_clone = true
-            v.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-        end    
+    # Configure VirtualBox
+    config.vm.provider :virtualbox do |v|
+        v.gui = true
+        v.name = "WindowsDC"
+        v.cpus = 2
+        v.memory = 2048
+        v.linked_clone = true
+        v.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    end    
 
     config.vm.synced_folder ".", "/vagrant"
 
@@ -47,6 +45,5 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", reboot: true
     config.vm.provision "shell", path: "provision/base.ps1", args: [$timezone]
     config.vm.provision "shell", path: "provision/ad-explorer.ps1"
-
 
 end
